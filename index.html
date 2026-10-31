@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#08030f">
+  <meta name="description" content="Filipp Kirkorov 3D Runner — a fan-made neon endless runner. Dodge the stage, collect gold microphones and unleash the Encore.">
+  <title>Filipp Kirkorov — 3D Runner</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0416'/%3E%3Cpath d='M32 8l5.6 16.4H55L40.7 35.2l5.6 16.4L32 41.8 17.7 51.6l5.6-16.4L9 24.4h17.4z' fill='%23ffcf5c'/%3E%3C/svg%3E">
+  <link rel="preload" href="./assets/fonts/RussoOne-lat.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/RussoOne-cyr.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-state="boot">
+  <div id="app">
+    <div id="stage" aria-hidden="true"></div>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header id="hud" class="hud" aria-label="Game status">
+      <div class="hud-cluster hud-cluster--left">
+        <div class="brand">
+          <span class="brand-star" aria-hidden="true">★</span>
+          <span class="brand-text">KIRKOROV<em>RUN</em></span>
+        </div>
+        <div id="lives" class="lives" aria-label="Three lives">
+          <span class="life is-on" aria-hidden="true">◆</span>
+          <span class="life is-on" aria-hidden="true">◆</span>
+          <span class="life is-on" aria-hidden="true">◆</span>
+        </div>
+        <div class="zone-chip"><span class="zone-dot"></span><span id="zone-name">MOSCOW</span></div>
+      </div>
+
+      <div class="hud-cluster hud-cluster--center">
+        <div class="score-label">SCORE</div>
+        <div id="score" class="score">000000</div>
+        <div id="combo" class="combo"><span>COMBO</span> <b>×2</b></div>
+      </div>
+
+      <div class="hud-cluster hud-cluster--right">
+        <div class="stat">
+          <span class="stat-label">DISTANCE</span>
+          <span id="distance" class="stat-value">0<span>m</span></span>
+        </div>
+        <div class="stat stat--coin">
+          <span class="mic-icon" aria-hidden="true"></span>
+          <span id="coins" class="stat-value">0</span>
+        </div>
+        <div class="hud-buttons">
+          <button id="mute-btn" class="icon-btn" type="button" aria-label="Mute sound" aria-pressed="false">
+            <span class="ico ico--sound" aria-hidden="true"></span>
+          </button>
+          <button id="pause-btn" class="icon-btn" type="button" aria-label="Pause game">
+            <span class="ico ico--pause" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div id="zone-toast" class="zone-toast" role="status" aria-live="polite">
+      <span class="zone-toast__kicker">NOW PLAYING</span>
+      <span class="zone-toast__name">MOSCOW</span>
+    </div>
+
+    <main>
+      <section id="start-screen" class="screen screen--start" aria-labelledby="game-title">
+        <div class="start-top">
+          <div class="marquee-badge">
+            <span class="marquee-lights" aria-hidden="true"></span>
+            <span>3D ENDLESS RUNNER</span>
+            <span class="marquee-sep">/</span>
+            <span>WORLD TOUR 2026</span>
+          </div>
+        </div>
+
+        <div class="start-main">
+          <p class="kicker"><span class="kicker-line"></span>THE KING OF RUSSIAN POP<span class="kicker-line"></span></p>
+          <h1 id="game-title" class="hero-title">
+            <span class="hero-line hero-line--1">FILIPP</span>
+            <span class="hero-line hero-line--2">KIRKOROV</span>
+            <span class="hero-line hero-line--3"><i>3D</i><b>RUNNER</b></span>
+          </h1>
+          <p class="hero-sub">ФИЛИПП КИРКОРОВ · БЕГИ К КУЛИСАМ</p>
+          <p class="hero-copy">The stage is yours. Dodge the speakers, duck the cameras and grab every golden microphone before the spotlight catches you.</p>
+
+          <div class="start-actions">
+            <button id="play-btn" class="btn btn--play" type="button">
+              <span class="btn-shine" aria-hidden="true"></span>
+              <span class="btn-play-icon" aria-hidden="true"></span>
+              <span>PLAY</span>
+            </button>
+            <div class="best-pill">
+              <span>BEST</span>
+              <b id="best-score-start">000000</b>
+            </div>
+          </div>
+
+          <div class="controls-grid" aria-label="Controls">
+            <div class="control-item">
+              <span class="keys"><kbd>←</kbd><kbd>→</kbd></span>
+              <span><b>Move</b><small>or swipe left / right</small></span>
+            </div>
+            <div class="control-item">
+              <span class="keys"><kbd class="kbd-wide">SPACE</kbd></span>
+              <span><b>Jump</b><small>or swipe up</small></span>
+            </div>
+            <div class="control-item">
+              <span class="keys"><kbd>↓</kbd></span>
+              <span><b>Slide</b><small>or swipe down</small></span>
+            </div>
+            <div class="control-item">
+              <span class="keys"><kbd>E</kbd></span>
+              <span><b>Encore</b><small>when the meter is full</small></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="start-foot">
+          <span>A fan-made arcade tribute</span>
+          <span class="foot-star" aria-hidden="true">★</span>
+          <span>Headphones recommended</span>
+        </div>
+      </section>
+
+      <section id="pause-screen" class="screen screen--pause" aria-labelledby="pause-title" hidden>
+        <div class="modal">
+          <p class="modal-kicker">INTERMISSION</p>
+          <h2 id="pause-title" class="modal-title">PAUSED</h2>
+          <p class="modal-copy">The crowd is waiting.</p>
+          <div class="modal-actions">
+            <button id="resume-btn" class="btn btn--gold" type="button">RESUME</button>
+            <button id="restart-btn-pause" class="btn btn--ghost" type="button">RESTART</button>
+          </div>
+          <button id="sound-toggle-pause" class="text-btn" type="button">Sound: on</button>
+        </div>
+      </section>
+
+      <section id="over-screen" class="screen screen--over" aria-labelledby="over-title" hidden>
+        <div class="modal modal--result">
+          <p class="modal-kicker">THE SPOTLIGHT FADES</p>
+          <h2 id="over-title" class="modal-title">SHOW OVER</h2>
+          <div id="new-best" class="new-best" hidden>★ NEW RECORD ★</div>
+          <div class="result-score">
+            <span>FINAL SCORE</span>
+            <b id="final-score">0</b>
+          </div>
+          <div class="result-grid">
+            <div><span>DISTANCE</span><b id="final-distance">0 m</b></div>
+            <div><span>GOLD MICS</span><b id="final-coins">0</b></div>
+            <div><span>BEST</span><b id="final-best">0</b></div>
+          </div>
+          <div class="modal-actions">
+            <button id="restart-btn" class="btn btn--play" type="button">
+              <span class="btn-shine" aria-hidden="true"></span>
+              <span class="btn-play-icon" aria-hidden="true"></span>
+              <span>PLAY AGAIN</span>
+            </button>
+            <button id="menu-btn" class="btn btn--ghost" type="button">BACKSTAGE</button>
+          </div>
+          <p class="modal-quote">“The encore is always worth it.”</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="encore" class="encore" aria-label="Encore meter">
+      <div class="encore-head">
+        <span class="encore-label"><span class="encore-star">★</span> ENCORE</span>
+        <button id="encore-btn" class="encore-btn" type="button" aria-label="Activate Encore" disabled>READY</button>
+      </div>
+      <div class="encore-track"><div id="encore-fill" class="encore-fill"></div><span class="encore-shine" aria-hidden="true"></span></div>
+    </div>
+
+    <div id="touch" class="touch-controls" aria-label="Touch controls">
+      <button class="touch-btn touch-btn--left" type="button" data-action="left" aria-label="Move left"><span>◀</span></button>
+      <div class="touch-stack">
+        <button class="touch-btn touch-btn--jump" type="button" data-action="jump" aria-label="Jump"><span>▲</span><small>JUMP</small></button>
+        <button class="touch-btn touch-btn--slide" type="button" data-action="slide" aria-label="Slide"><span>▼</span><small>SLIDE</small></button>
+      </div>
+      <button class="touch-btn touch-btn--right" type="button" data-action="right" aria-label="Move right"><span>▶</span></button>
+    </div>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+    <div id="flash" class="flash" aria-hidden="true"></div>
+    <div id="speedlines" class="speedlines" aria-hidden="true"></div>
+
+    <div id="boot" class="boot">
+      <div class="boot-mark">★</div>
+      <div class="boot-text">TUNING THE STAGE</div>
+      <div class="boot-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p id="boot-error" class="boot-error" hidden>WebGL could not start on this device. Try a browser with hardware acceleration.</p>
+    </div>
+  </div>
+
+  <script type="importmap">
+    { "imports": {
+      "three": "./vendor/three.module.js",
+      "three/addons/": "./vendor/addons/"
+    } }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -16,3 +16,14 @@
 - 👤 [Explore the creator's projects](https://omgithub.com/romamakakas-ui).
 - 🌍 [Create with OMGithub](https://omgithub.com).
 <!-- omgithub:readme:end -->
+
+## 🎤 Filipp Kirkorov — 3D Runner
+
+A fan-made neon endless runner through a Moscow stage, with a stylised
+Kirkorov avatar, gold microphones, a three-lane stage, and an **ENCORE**
+double-score power-up.
+
+- **Desktop:** arrow keys / WASD to move, `Space` to jump, `↓` to slide, `E` for Encore, `Esc` or `P` to pause.
+- **Mobile:** swipe left/right to change lanes, swipe up to jump, swipe down to slide, or use the on-screen buttons.
+- Built with Three.js, procedural geometry, canvas textures, and synthesized WebAudio — no build step or external runtime dependencies.
+- Run `./start.sh` to serve the static game locally.
